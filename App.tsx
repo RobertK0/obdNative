@@ -55,19 +55,14 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
+function App(props: any): React.JSX.Element {
+  const isDarkMode = true;
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -77,14 +72,24 @@ function App(): React.JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            Edit <Text style={styles.highlight}>{props.counter}</Text>
           </Section>
           <Section title="See Your Changes">
-            <ReloadInstructions />
+            {props.doubleArray?.length && (
+              <>
+                <Text style={styles.rpmBig}>
+                  {String(props.doubleArray[0])[0]}
+                </Text>
+                <Text style={styles.rpm}>
+                  {String(Math.round(props.doubleArray[0] / 100) * 100).slice(
+                    1,
+                  )}
+                </Text>
+              </>
+            )}
           </Section>
           <Section title="Debug">
-            <DebugInstructions />
+            is ecu connected: {`${props.isConnected}`}
           </Section>
           <Section title="Learn More">
             Read the docs to discover what to do next:
@@ -112,6 +117,16 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  rpm: {
+    fontFamily: 'TechnicalStandardVP-Oblique',
+    fontSize: 70,
+    color: '#ddd',
+  },
+  rpmBig: {
+    fontFamily: 'TechnicalStandardVP-Oblique',
+    fontSize: 100,
+    color: '#ddd',
   },
 });
 

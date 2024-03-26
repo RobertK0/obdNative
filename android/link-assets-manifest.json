@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/TechnicalStandardVP-Oblique.otf",
+      "sha1": "2c6aac393ed4fe12360f3284f81431ceb2bafd09"
+    },
+    {
+      "path": "assets/fonts/TechnicalStandardVP-Oblique.ttf",
+      "sha1": "c4df1718c1f6094f36e75e43c2083290c1b60dc3"
+    }
+  ]
+}
