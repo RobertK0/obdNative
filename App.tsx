@@ -24,6 +24,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {background, gauge} from './assets/images';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -81,9 +82,7 @@ function App(props: any): React.JSX.Element {
                   {String(props.doubleArray[0])[0]}
                 </Text>
                 <Text style={styles.rpm}>
-                  {String(Math.round(props.doubleArray[0] / 100) * 100).slice(
-                    1,
-                  )}
+                  {String(Math.round(props.doubleArray[0] / 10) * 10).slice(1)}
                 </Text>
               </>
             )}
