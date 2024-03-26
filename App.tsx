@@ -18,8 +18,13 @@ import Animated, {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(props: any): React.JSX.Element {
-  const [rpm, setRpm] = useState(1200);
+  // 46 ambiend ar temp
+  // ff1273 engine kw at the wheels
+  // ff1226 horsepower at the wheels
+  // ff1225 torque
+  const [rpm, setRpm] = useState(3200);
   const [speed, setSpeed] = useState(30);
+  const [torque, setTorque] = useState(120);
   const scaleValue = useSharedValue(1);
 
   const startAnimation = (input = 2) => {
@@ -35,7 +40,6 @@ function App(props: any): React.JSX.Element {
     function transformToOutput(input: number) {
       const slope = (2 - 1) / (6000 - 800);
       const intercept = 1 - slope * 800;
-      console.log(slope * input + intercept);
       return slope * input + intercept;
     }
 
@@ -51,8 +55,6 @@ function App(props: any): React.JSX.Element {
   });
   const {width, height} = useWindowDimensions();
 
-  console.log('rpm', rpm);
-
   return (
     <GestureHandlerRootView>
       <View style={{position: 'relative', flex: 1}}>
@@ -64,7 +66,98 @@ function App(props: any): React.JSX.Element {
             width: width,
             height: height,
             left: 0,
-          }}></Image>
+          }}
+        />
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.272,
+            left: width * 0.156,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          400
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.407,
+            left: width * 0.146,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          266
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.545,
+            left: width * 0.146,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          133
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.675,
+            left: width * 0.156,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          0 Nm
+        </Text>
+
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.272,
+            left: 603,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          136
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.407,
+            left: width * 0.837,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          90
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.545,
+            left: width * 0.837,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          45
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.675,
+            left: width * 0.808,
+            fontSize: 14,
+            color: '#ddd',
+          }}>
+          0 kW
+        </Text>
+
         <Animated.Image
           source={gauge}
           style={[
@@ -84,25 +177,25 @@ function App(props: any): React.JSX.Element {
               style={{
                 fontFamily: 'TechnicalStandardVP-Medium',
                 position: 'absolute',
-                top: height * 0.05,
+                top: height * 0.135,
                 left: 0,
                 textAlign: 'center',
                 width: width,
                 color: '#ddd',
                 fontSize: 50,
               }}>
-              30
+              {speed}
             </Text>
             <Text
               style={{
                 fontFamily: 'TechnicalStandardVP-Medium',
                 position: 'absolute',
-                top: height * 0.17,
+                top: height * 0.26,
                 left: 0,
                 textAlign: 'center',
                 width: width,
                 color: '#ddd',
-                fontSize: 20,
+                fontSize: 18,
               }}>
               km/h
             </Text>
@@ -138,7 +231,7 @@ function App(props: any): React.JSX.Element {
                 </>
               ) : (
                 <Text style={styles.rpm}>
-                  {String(Math.round(rpm / 100) * 100)}
+                  {String(Math.round(rpm / 10) * 10)}
                 </Text>
               )}
             </View>
@@ -168,18 +261,33 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              <Text style={[styles.rpmBig, {opacity: 0.5}]}>
-                {String(rpm[0])[0]}
-              </Text>
-              <Text
-                style={[
-                  styles.rpm,
-                  {
-                    opacity: 0.5,
-                  },
-                ]}>
-                {String(Math.round(rpm[0] / 10) * 10).slice(1)}
-              </Text>
+              {String(rpm).length > 3 ? (
+                <>
+                  <Text style={[styles.rpmBig, {opacity: 0.5}]}>
+                    {String(rpm)[0]}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.rpm,
+                      {
+                        opacity: 0.5,
+                      },
+                    ]}>
+                    {String(Math.round(rpm / 10) * 10).slice(1)}
+                  </Text>
+                </>
+              ) : (
+                <Text
+                  style={[
+                    styles.rpm,
+                    {
+                      opacity: 0.5,
+                    },
+                  ]}>
+                  {String(Math.round(rpm / 10) * 10)}
+                </Text>
+              )}
+
               <Image
                 source={gradient}
                 style={{
