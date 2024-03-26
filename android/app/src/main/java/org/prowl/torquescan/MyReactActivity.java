@@ -174,7 +174,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
         updatedProps.putInt("counter", counter);
         String[] pids = {"0c", "0d"};
         boolean isConnected = false;
-        double[] value = {300};
+        double[] value = {300, 30};
         Log.d("Main", String.valueOf(torqueService));
 
         try {
