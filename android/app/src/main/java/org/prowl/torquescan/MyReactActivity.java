@@ -184,7 +184,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        updatedProps.putDoubleArray("doubleArray", value);
+        updatedProps.putDoubleArray("pids", value);
         updatedProps.putBoolean("isConnected", isConnected);
 
         mReactRootView.setAppProperties(updatedProps);

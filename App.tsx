@@ -18,8 +18,8 @@ import Animated, {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(props: any): React.JSX.Element {
-  const [rpm, setRpm] = useState([1200]);
-  const [speed, setSpeed] = useState([0]);
+  const [rpm, setRpm] = useState(1200);
+  const [speed, setSpeed] = useState(30);
   const scaleValue = useSharedValue(1);
 
   const startAnimation = (input = 2) => {
@@ -27,20 +27,21 @@ function App(props: any): React.JSX.Element {
   };
 
   useEffect(() => {
+    if (props.isConnected && props.pids) {
+      setRpm(props.pids[0]);
+      setSpeed(props.pids[1]);
+    }
     const test = () => {
-      function generateRandomNumber() {
-        // Generate a random number between -1 and 1
-        const randomFraction = Math.random() + 1;
-
-        setRpm([((randomFraction - 1) / (2 - 1)) * (4000 - 800) + 800]);
-
-        return randomFraction;
+      function transformToOutput(input: number) {
+        const slope = (2 - 1) / (6000 - 800);
+        const intercept = 1 - slope * 800;
+        return slope * input + intercept;
       }
 
-      startAnimation(2);
+      startAnimation(transformToOutput(rpm));
     };
-    setInterval(test, 300);
-  }, [props.counter]);
+    // setInterval(test, 300);
+  }, [props]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -49,7 +50,8 @@ function App(props: any): React.JSX.Element {
   });
   const {width, height} = useWindowDimensions();
 
-  const testData = [900];
+  console.log('rpm', rpm);
+
   return (
     <GestureHandlerRootView>
       <View style={{position: 'relative', flex: 1}}>
@@ -75,34 +77,37 @@ function App(props: any): React.JSX.Element {
             },
             animatedStyle,
           ]}></Animated.Image>
-
-        <Text
-          style={{
-            fontFamily: 'TechnicalStandardVP-Medium',
-            position: 'absolute',
-            top: height * 0.05,
-            left: 0,
-            textAlign: 'center',
-            width: width,
-            color: '#ddd',
-            fontSize: 50,
-          }}>
-          30
-        </Text>
-        <Text
-          style={{
-            fontFamily: 'TechnicalStandardVP-Medium',
-            position: 'absolute',
-            top: height * 0.17,
-            left: 0,
-            textAlign: 'center',
-            width: width,
-            color: '#ddd',
-            fontSize: 20,
-          }}>
-          km/h
-        </Text>
-        {rpm?.length && (
+        {typeof speed === typeof Number() && (
+          <>
+            <Text
+              style={{
+                fontFamily: 'TechnicalStandardVP-Medium',
+                position: 'absolute',
+                top: height * 0.05,
+                left: 0,
+                textAlign: 'center',
+                width: width,
+                color: '#ddd',
+                fontSize: 50,
+              }}>
+              30
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'TechnicalStandardVP-Medium',
+                position: 'absolute',
+                top: height * 0.17,
+                left: 0,
+                textAlign: 'center',
+                width: width,
+                color: '#ddd',
+                fontSize: 20,
+              }}>
+              km/h
+            </Text>
+          </>
+        )}
+        {typeof rpm === typeof Number() && (
           <View
             style={{
               position: 'absolute',
@@ -123,10 +128,18 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.rpmBig}>{String(rpm[0])[0]}</Text>
-              <Text style={styles.rpm}>
-                {String(Math.round(rpm[0] / 100) * 100).slice(1)}
-              </Text>
+              {String(rpm).length > 3 ? (
+                <>
+                  <Text style={styles.rpmBig}>{String(rpm)[0]}</Text>
+                  <Text style={styles.rpm}>
+                    {String(Math.round(rpm / 100) * 100).slice(1)}
+                  </Text>
+                </>
+              ) : (
+                <Text style={styles.rpm}>
+                  {String(Math.round(rpm / 100) * 100)}
+                </Text>
+              )}
             </View>
             <Text
               style={{
