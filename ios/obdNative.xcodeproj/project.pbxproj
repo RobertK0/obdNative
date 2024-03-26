@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		65A1B1BEE28C4C0298A7B0DE /* TechnicalStandardVP-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91A54F91962B4C8BBE65F041 /* TechnicalStandardVP-Oblique.otf */; };
 		C7CA916C87614E8CB900DD0A /* TechnicalStandardVP-Oblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42BF0825D1A94822BD476517 /* TechnicalStandardVP-Oblique.ttf */; };
+		A0B46CBF4E11472A93FEC895 /* TechnicalStandardVP-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BBD86529D2E94CB6B45BD393 /* TechnicalStandardVP-Medium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		91A54F91962B4C8BBE65F041 /* TechnicalStandardVP-Oblique.otf */ = {isa = PBXFileReference; name = "TechnicalStandardVP-Oblique.otf"; path = "../assets/fonts/TechnicalStandardVP-Oblique.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		42BF0825D1A94822BD476517 /* TechnicalStandardVP-Oblique.ttf */ = {isa = PBXFileReference; name = "TechnicalStandardVP-Oblique.ttf"; path = "../assets/fonts/TechnicalStandardVP-Oblique.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BBD86529D2E94CB6B45BD393 /* TechnicalStandardVP-Medium.otf */ = {isa = PBXFileReference; name = "TechnicalStandardVP-Medium.otf"; path = "../assets/fonts/TechnicalStandardVP-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 			children = (
 				91A54F91962B4C8BBE65F041 /* TechnicalStandardVP-Oblique.otf */,
 				42BF0825D1A94822BD476517 /* TechnicalStandardVP-Oblique.ttf */,
+				BBD86529D2E94CB6B45BD393 /* TechnicalStandardVP-Medium.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				65A1B1BEE28C4C0298A7B0DE /* TechnicalStandardVP-Oblique.otf in Resources */,
 				C7CA916C87614E8CB900DD0A /* TechnicalStandardVP-Oblique.ttf in Resources */,
+				A0B46CBF4E11472A93FEC895 /* TechnicalStandardVP-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
