@@ -24,9 +24,11 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.soloader.SoLoader;
+import com.swmansion.reanimated.ReanimatedPackage;
 
 import org.prowl.torque.remote.ITorqueService;
 
@@ -56,13 +58,19 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
         SoLoader.init(this, false);
 
         mReactRootView = new ReactRootView(this);
-        Bundle updatedProps = mReactRootView.getAppProperties();
-
         Bundle initialProperties = new Bundle();
 
         mReactRootView.setAppProperties(initialProperties);
 
         List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
+
+        packages.add(new ReanimatedPackage() {
+            @Override
+            public ReactInstanceManager getReactInstanceManager(ReactApplicationContext reactContext) {
+                // Implement here your way to get the ReactInstanceManager
+                return mReactInstanceManager;
+            }
+        });
         // Packages that cannot be autolinked yet can be added manually here, for example:
         // packages.add(new MyReactNativePackage());
         // Remember to include them in `settings.gradle` and `app/build.gradle` too.
@@ -101,13 +109,13 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
     protected void onResume() {
         super.onResume();
 
-        if (updateTimer != null)
-            updateTimer.cancel();
-        updateTimer = new Timer();
-        updateTimer.schedule(new TimerTask() { public void run() {
-            refreshData();
-        }
-        },300,300);
+//        if (updateTimer != null)
+//            updateTimer.cancel();
+//        updateTimer = new Timer();
+//        updateTimer.schedule(new TimerTask() { public void run() {
+//            refreshData();
+//        }
+//        },300,300);
 
         // Bind to the torque service
         Intent intent = new Intent();
@@ -133,11 +141,12 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
 
     @Override
     public void onBackPressed() {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
+        refreshData();
+//        if (mReactInstanceManager != null) {
+//            mReactInstanceManager.onBackPressed();
+//        } else {
+//            super.onBackPressed();
+//        }
     }
 
 
