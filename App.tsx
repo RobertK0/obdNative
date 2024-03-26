@@ -18,11 +18,12 @@ import Animated, {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(props: any): React.JSX.Element {
-  const [rpm, setRpm] = useState([860]);
+  const [rpm, setRpm] = useState([1200]);
+  const [speed, setSpeed] = useState([0]);
   const scaleValue = useSharedValue(1);
 
   const startAnimation = (input = 2) => {
-    scaleValue.value = withTiming(input, {duration: 500});
+    scaleValue.value = withTiming(input, {duration: 300});
   };
 
   useEffect(() => {
@@ -36,9 +37,9 @@ function App(props: any): React.JSX.Element {
         return randomFraction;
       }
 
-      // startAnimation(generateRandomNumber());
+      startAnimation(2);
     };
-    // setInterval(test, 1000);
+    setInterval(test, 300);
   }, [props.counter]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -75,6 +76,32 @@ function App(props: any): React.JSX.Element {
             animatedStyle,
           ]}></Animated.Image>
 
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.05,
+            left: 0,
+            textAlign: 'center',
+            width: width,
+            color: '#ddd',
+            fontSize: 50,
+          }}>
+          30
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'TechnicalStandardVP-Medium',
+            position: 'absolute',
+            top: height * 0.17,
+            left: 0,
+            textAlign: 'center',
+            width: width,
+            color: '#ddd',
+            fontSize: 20,
+          }}>
+          km/h
+        </Text>
         {rpm?.length && (
           <View
             style={{
@@ -101,7 +128,20 @@ function App(props: any): React.JSX.Element {
                 {String(Math.round(rpm[0] / 100) * 100).slice(1)}
               </Text>
             </View>
-
+            <Text
+              style={{
+                fontSize: 20,
+                position: 'absolute',
+                bottom: height * 0 - 30,
+                zIndex: 99,
+                right: width * 0.4,
+                height: 100,
+                width: 100,
+                color: '#bbb',
+                fontFamily: 'TechnicalStandardVP-Medium',
+              }}>
+              rpm
+            </Text>
             <View
               style={{
                 position: 'absolute',
@@ -114,8 +154,16 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.rpmBig}>{String(rpm[0])[0]}</Text>
-              <Text style={styles.rpm}>
+              <Text style={[styles.rpmBig, {opacity: 0.5}]}>
+                {String(rpm[0])[0]}
+              </Text>
+              <Text
+                style={[
+                  styles.rpm,
+                  {
+                    opacity: 0.5,
+                  },
+                ]}>
                 {String(Math.round(rpm[0] / 10) * 10).slice(1)}
               </Text>
               <Image

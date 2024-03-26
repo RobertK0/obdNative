@@ -109,13 +109,13 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
     protected void onResume() {
         super.onResume();
 
-//        if (updateTimer != null)
-//            updateTimer.cancel();
-//        updateTimer = new Timer();
-//        updateTimer.schedule(new TimerTask() { public void run() {
-//            refreshData();
-//        }
-//        },300,300);
+        if (updateTimer != null)
+            updateTimer.cancel();
+        updateTimer = new Timer();
+        updateTimer.schedule(new TimerTask() { public void run() {
+            refreshData();
+        }
+        },300,300);
 
         // Bind to the torque service
         Intent intent = new Intent();
@@ -172,7 +172,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
 
         assert updatedProps != null;
         updatedProps.putInt("counter", counter);
-        String[] pids = {"0c"};
+        String[] pids = {"0c", "0d"};
         boolean isConnected = false;
         double[] value = {300};
         Log.d("Main", String.valueOf(torqueService));
