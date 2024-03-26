@@ -142,11 +142,11 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
     @Override
     public void onBackPressed() {
         refreshData();
-//        if (mReactInstanceManager != null) {
-//            mReactInstanceManager.onBackPressed();
-//        } else {
-//            super.onBackPressed();
-//        }
+       if (mReactInstanceManager != null) {
+           mReactInstanceManager.onBackPressed();
+       } else {
+           super.onBackPressed();
+       }
     }
 
 
