@@ -31,15 +31,16 @@ function App(props: any): React.JSX.Element {
       setRpm(props.pids[0]);
       setSpeed(props.pids[1]);
     }
-    const test = () => {
-      function transformToOutput(input: number) {
-        const slope = (2 - 1) / (6000 - 800);
-        const intercept = 1 - slope * 800;
-        return slope * input + intercept;
-      }
 
-      startAnimation(transformToOutput(rpm));
-    };
+    function transformToOutput(input: number) {
+      const slope = (2 - 1) / (6000 - 800);
+      const intercept = 1 - slope * 800;
+      console.log(slope * input + intercept);
+      return slope * input + intercept;
+    }
+
+    startAnimation(transformToOutput(rpm));
+
     // setInterval(test, 300);
   }, [props]);
 
