@@ -7,7 +7,14 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
-import {Image, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {
+  Easing,
+  Image,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 import {background, gauge, gradient} from './assets/images';
 import Animated, {
@@ -28,7 +35,10 @@ function App(props: any): React.JSX.Element {
   const scaleValue = useSharedValue(1);
 
   const startAnimation = (input = 2) => {
-    scaleValue.value = withTiming(input, {duration: 300});
+    scaleValue.value = withTiming(input, {
+      duration: 300,
+      easing: Easing.linear,
+    });
   };
 
   useEffect(() => {
