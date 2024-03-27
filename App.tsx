@@ -35,9 +35,9 @@ function App(props: any): React.JSX.Element {
   const scaleValue = useSharedValue(1);
 
   const startAnimation = (input = 2) => {
-    scaleValue.value = withTiming(input, {
+    const output = Easing.linear(input);
+    scaleValue.value = withTiming(output, {
       duration: 300,
-      easing: Easing.linear,
     });
   };
 
