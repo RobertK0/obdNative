@@ -142,7 +142,6 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
 
     @Override
     public void onBackPressed() {
-        refreshData();
        if (mReactInstanceManager != null) {
            mReactInstanceManager.onBackPressed();
        } else {
@@ -166,29 +165,28 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
     }
 
     public void refreshData() {
+        runOnUiThread(() -> {
+            counter = counter + 1;
 
-        counter = counter + 1;
+            Bundle updatedProps = mReactRootView.getAppProperties();
+            assert updatedProps != null;
+            updatedProps.putInt("counter", counter);
+            String[] pids = {"0c", "0d"};
+            boolean isConnected = false;
+            double[] value = {300, 30};
+            Log.d("Main", String.valueOf(torqueService));
 
-        Bundle updatedProps = mReactRootView.getAppProperties();
+            try {
+                value = torqueService.getPIDValuesAsDouble(pids);
+                isConnected = torqueService.isConnectedToECU();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            updatedProps.putDoubleArray("pids", value);
+            updatedProps.putBoolean("isConnected", isConnected);
 
-        assert updatedProps != null;
-        updatedProps.putInt("counter", counter);
-        String[] pids = {"0c", "0d"};
-        boolean isConnected = false;
-        double[] value = {300, 30};
-        Log.d("Main", String.valueOf(torqueService));
-
-        try {
-            value = torqueService.getPIDValuesAsDouble(pids);
-            isConnected = torqueService.isConnectedToECU();
-
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-        updatedProps.putDoubleArray("pids", value);
-        updatedProps.putBoolean("isConnected", isConnected);
-
-        mReactRootView.setAppProperties(updatedProps);
+            mReactRootView.setAppProperties(updatedProps);
+        });
     }
 
     public void popupMessage(final String title, final String message, final boolean finishOnClose) {
