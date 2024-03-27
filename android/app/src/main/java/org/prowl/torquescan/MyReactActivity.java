@@ -115,7 +115,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
         updateTimer.schedule(new TimerTask() { public void run() {
             refreshData();
         }
-        },300,300);
+        },200,200);
 
         // Bind to the torque service
         Intent intent = new Intent();

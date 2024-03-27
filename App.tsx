@@ -232,7 +232,7 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              {String(rpm).length > 3 ? (
+              {rpm.toFixed().length > 3 ? (
                 <>
                   <Text style={styles.rpmBig}>{String(rpm)[0]}</Text>
                   <Text style={styles.rpm}>
@@ -283,7 +283,7 @@ function App(props: any): React.JSX.Element {
                         opacity: 0.5,
                       },
                     ]}>
-                    {String(Math.round(rpm / 10) * 10).slice(1)}
+                    {String(Math.round(rpm / 100) * 100).slice(1)}
                   </Text>
                 </>
               ) : (
