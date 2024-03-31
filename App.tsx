@@ -30,7 +30,7 @@ function App(props: any): React.JSX.Element {
   // ff1273 engine kw at the wheels
   // ff1226 horsepower at the wheels
   // ff1225 torque
-  const [rpm, setRpm] = useState(3200);
+  const [rpm, setRpm] = useState(1000);
   const [speed, setSpeed] = useState(30);
   const [torque, setTorque] = useState(120);
   const scaleValue = useSharedValue(1);
@@ -49,6 +49,14 @@ function App(props: any): React.JSX.Element {
     if (props.isConnected && props.pids) {
       setRpm(props.pids[0]);
       setSpeed(props.pids[1]);
+      startAnimation(transformToOutput(props.pids[0]));
+    } else {
+      setRpm(prev => {
+        const rpm = prev + 800;
+
+        startAnimation(transformToOutput(rpm > 5000 ? 800 : rpm));
+        return rpm > 5000 ? 800 : rpm;
+      });
     }
 
     function transformToOutput(input: number) {
@@ -56,8 +64,6 @@ function App(props: any): React.JSX.Element {
       const intercept = 1 - slope * 800;
       return slope * input + intercept;
     }
-
-    startAnimation(transformToOutput(rpm));
 
     // setInterval(test, 300);
   }, [props]);
@@ -177,10 +183,10 @@ function App(props: any): React.JSX.Element {
           style={[
             {
               position: 'absolute',
-              top: height * 0.47 - height / 1.7335 / 2,
+              top: height * 0.47 - height / 2 / 2,
               left: width * 0.5 - width / 2.8125 / 2,
               width: width / 2.8125,
-              height: height / 1.7335,
+              height: height / 2,
               transform: [{scale: 1}],
             },
             animatedStyle,
