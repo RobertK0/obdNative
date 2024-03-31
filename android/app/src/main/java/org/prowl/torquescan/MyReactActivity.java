@@ -116,7 +116,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
             refreshData();
         }
 
-        },3000,300);
+        },5000,3000);
 
         // Bind to the torque service
         Intent intent = new Intent();

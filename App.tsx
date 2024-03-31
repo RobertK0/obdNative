@@ -12,6 +12,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  ToastAndroid,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -42,6 +43,9 @@ function App(props: any): React.JSX.Element {
   };
 
   useEffect(() => {
+    if (props.pids)
+      ToastAndroid.show(props.pids.toString(), ToastAndroid.SHORT);
+
     if (props.isConnected && props.pids) {
       setRpm(props.pids[0]);
       setSpeed(props.pids[1]);
