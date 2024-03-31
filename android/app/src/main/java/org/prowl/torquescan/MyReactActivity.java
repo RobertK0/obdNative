@@ -173,16 +173,16 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
             updatedProps.putInt("counter", counter);
             String[] pids = {"0c", "0d"};
             boolean isConnected = false;
-            double[] value = {300, 30};
+            float[] value = {300, 30};
             Log.d("Main", String.valueOf(torqueService));
 
             try {
-                value = torqueService.getPIDValuesAsDouble(pids);
+                value = torqueService.getPIDValues(pids);
                 isConnected = torqueService.isConnectedToECU();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            updatedProps.putDoubleArray("pids", value);
+            updatedProps.putFloatArray("pids", value);
             updatedProps.putBoolean("isConnected", isConnected);
 
             mReactRootView.setAppProperties(updatedProps);
