@@ -194,21 +194,40 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
             Bundle updatedProps = mReactRootView.getAppProperties();
             assert updatedProps != null;
             updatedProps.putInt("counter", counter);
-            String[] pids = {"0c", "0d"};
-            boolean isConnected = false;
-            float[] value = {300, 30};
-            Log.d("Main", String.valueOf(torqueService));
+            String[] pids = {"0c,0", "0d,0"};
 
             try {
-                value = torqueService.getPIDValues(pids);
+                String[] mpids = torqueService.listAllPIDs();
+                String[] pidInfo = torqueService.getPIDInformation(mpids);
+                Vector<String> tyrePids = new Vector<>();
+                Collections.addAll(tyrePids, pids);
+                for (int i = 0; i < pidInfo.length; i++) {
+                    if(pidInfo[i].toLowerCase().contains("tyre")) {
+                        tyrePids.add(mpids[i]);
+                    }
+                }
+                String[] pidsArray = tyrePids.toArray(new String[tyrePids.size()]);
+
+                boolean isConnected = false;
+                float[] value = {300, 30, 2.5F, 2.5F, 2.5F, 2.5F};
+
+
+                value = torqueService.getPIDValues(pidsArray);
                 isConnected = torqueService.isConnectedToECU();
+
+
+                updatedProps.putFloatArray("pids", value);
+                updatedProps.putBoolean("isConnected", isConnected);
+
+                mReactRootView.setAppProperties(updatedProps);
+
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            updatedProps.putFloatArray("pids", value);
-            updatedProps.putBoolean("isConnected", isConnected);
 
-            mReactRootView.setAppProperties(updatedProps);
+            Log.d("Main", String.valueOf(torqueService));
+
+
         });
     }
 
