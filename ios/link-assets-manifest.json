@@ -12,6 +12,10 @@
     {
       "path": "assets/fonts/TechnicalStandardVP-Oblique.ttf",
       "sha1": "c4df1718c1f6094f36e75e43c2083290c1b60dc3"
+    },
+    {
+      "path": "assets/fonts/TechnicalStandardVP-Regular.otf",
+      "sha1": "7e690dce4188b1ac04cdf28ba671e4fa31b764ad"
     }
   ]
 }
