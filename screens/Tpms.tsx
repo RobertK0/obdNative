@@ -3,11 +3,10 @@ import {systemBg, topDownCar} from '../assets/images';
 import {Image, Text, useWindowDimensions, View} from 'react-native';
 import {Context} from './Home';
 
-function Tpms(props: any) {
+function Tpms() {
   const {width, height} = useWindowDimensions();
   const data = useContext(Context);
 
-  console.log(data.tpmsImageScale);
   return (
     <>
       <Image
