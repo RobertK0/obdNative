@@ -17,10 +17,14 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.react.PackageList;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
@@ -31,15 +35,19 @@ import com.facebook.soloader.SoLoader;
 import com.swmansion.reanimated.ReanimatedPackage;
 
 import org.prowl.torque.remote.ITorqueService;
+import org.prowl.torquescan.utils.MyTimerModule;
+import org.prowl.torquescan.utils.SetTimerModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 
-public class MyReactActivity extends Activity implements DefaultHardwareBackBtnHandler {
+public class MyReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
     private ITorqueService torqueService;
     private Handler handler;
@@ -64,6 +72,9 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
 
         List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
 
+        ReactApplicationContext reactContext = new ReactApplicationContext(this);
+
+        packages.add(new MyTimerModule());
         packages.add(new ReanimatedPackage() {
             @Override
             public ReactInstanceManager getReactInstanceManager(ReactApplicationContext reactContext) {
@@ -116,7 +127,7 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
             refreshData();
         }
 
-        },5000,3000);
+        },10000,1500);
 
         // Bind to the torque service
         Intent intent = new Intent();
@@ -126,6 +137,18 @@ public class MyReactActivity extends Activity implements DefaultHardwareBackBtnH
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onHostResume(this, this);
         }
+    }
+
+    public void updateTimerInterval(int interval) {
+        if (updateTimer != null)
+            updateTimer.cancel();
+
+        updateTimer = new Timer();
+        updateTimer.schedule(new TimerTask() {
+            public void run() {
+                refreshData();
+            }
+        }, 3000, interval); // Use the received interval value here
     }
 
     @Override
