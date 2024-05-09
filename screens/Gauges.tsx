@@ -1,88 +1,31 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, {useEffect, useRef, useState} from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useContext} from 'react';
 import {
-  Easing,
   Image,
   Pressable,
   StyleSheet,
   Text,
-  ToastAndroid,
   useWindowDimensions,
   View,
 } from 'react-native';
-
-import {background, gauge, gradient} from './assets/images';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {background, gauge, gradient} from '../assets/images';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {Context} from './Home';
 
-function App(props: any): React.JSX.Element {
-  // 46 ambiend ar temp
-  // ff1273 engine kw at the wheels
-  // ff1226 horsepower at the wheels
-  // ff1225 torque
-
-  const [debug, setDebug] = useState(false);
-  const [rpm, setRpm] = useState(1000);
-  const [speed, setSpeed] = useState(30);
-  const [torque, setTorque] = useState(120);
+function Gauges() {
   const scaleValue = useSharedValue(1);
 
-  const startAnimation = (input = 2) => {
-    const output = Easing.linear(input);
-    scaleValue.value = withTiming(output, {
-      duration: 300,
-    });
-  };
-
-  function transformToOutput(input: number) {
-    const slope = (2 - 1) / (6000 - 800);
-    const intercept = 1 - slope * 800;
-    return slope * input + intercept;
-  }
-
-  useEffect(() => {
-    if (props.pids)
-      if (props.isConnected) {
-        if (debug) ToastAndroid.show(props.pids.toString(), ToastAndroid.SHORT);
-
-        setRpm(props.pids[0]);
-        setSpeed(props.pids[1]);
-
-        startAnimation(transformToOutput(props.pids[0]));
-      } else {
-        setRpm(prev => {
-          const rpm = prev + 200;
-
-          startAnimation(transformToOutput(rpm > 5000 ? 800 : rpm));
-          return rpm > 5000 ? 800 : rpm;
-        });
-      }
-
-    // setInterval(test, 300);
-  }, [props]);
-
-  const onToggleDebug = () => {
-    setDebug(prev => {
-      return !prev;
-    });
-  };
+  const data = useContext(Context);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{scale: scaleValue.value}],
     };
   });
+
   const {width, height} = useWindowDimensions();
 
   return (
@@ -206,7 +149,7 @@ function App(props: any): React.JSX.Element {
             ]}></Animated.Image>
         </>
 
-        {typeof speed === typeof Number() && (
+        {typeof data.speed === typeof Number() && (
           <>
             <Text
               style={{
@@ -219,7 +162,7 @@ function App(props: any): React.JSX.Element {
                 color: '#ddd',
                 fontSize: 50,
               }}>
-              {speed}
+              {data.speed}
             </Text>
             <Text
               style={{
@@ -236,7 +179,7 @@ function App(props: any): React.JSX.Element {
             </Text>
           </>
         )}
-        {typeof rpm === typeof Number() && (
+        {typeof data.rpm === typeof Number() && (
           <View
             style={{
               position: 'absolute',
@@ -257,16 +200,16 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              {rpm.toFixed().length > 3 ? (
+              {data.rpm.toFixed().length > 3 ? (
                 <>
-                  <Text style={styles.rpmBig}>{String(rpm)[0]}</Text>
+                  <Text style={styles.rpmBig}>{String(data.rpm)[0]}</Text>
                   <Text style={styles.rpm}>
-                    {String(Math.round(rpm / 100) * 100).slice(1)}
+                    {String(Math.round(data.rpm / 100) * 100).slice(1)}
                   </Text>
                 </>
               ) : (
                 <Text style={styles.rpm}>
-                  {String(Math.round(rpm / 10) * 10)}
+                  {String(Math.round(data.rpm / 10) * 10)}
                 </Text>
               )}
             </View>
@@ -296,10 +239,10 @@ function App(props: any): React.JSX.Element {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
-              {String(rpm).length > 3 ? (
+              {String(data.rpm).length > 3 ? (
                 <>
                   <Text style={[styles.rpmBig, {opacity: 0.5}]}>
-                    {String(rpm)[0]}
+                    {String(data.rpm)[0]}
                   </Text>
                   <Text
                     style={[
@@ -308,7 +251,7 @@ function App(props: any): React.JSX.Element {
                         opacity: 0.5,
                       },
                     ]}>
-                    {String(Math.round(rpm / 100) * 100).slice(1)}
+                    {String(Math.round(data.rpm / 100) * 100).slice(1)}
                   </Text>
                 </>
               ) : (
@@ -319,7 +262,7 @@ function App(props: any): React.JSX.Element {
                       opacity: 0.5,
                     },
                   ]}>
-                  {String(Math.round(rpm / 10) * 10)}
+                  {String(Math.round(data.rpm / 10) * 10)}
                 </Text>
               )}
 
@@ -335,23 +278,12 @@ function App(props: any): React.JSX.Element {
             </View>
           </View>
         )}
-        <Pressable onPress={onToggleDebug}>
-          <Text
-            style={{
-              fontFamily: 'TechnicalStandardVP-Regular',
-              position: 'absolute',
-              top: height * 0.1,
-              left: width * 0.85,
-              fontSize: 18,
-              color: 'white',
-            }}>
-            Toggle debug
-          </Text>
-        </Pressable>
       </View>
     </GestureHandlerRootView>
   );
 }
+
+export default Gauges;
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -382,5 +314,3 @@ const styles = StyleSheet.create({
     color: '#ddd',
   },
 });
-
-export default App;
